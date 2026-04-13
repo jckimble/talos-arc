@@ -1,0 +1,9 @@
+clusterconfig/
+generated/
+.talos/
+talosconfig
+secrets/**/*.dec.yaml
+.env
+.env.*
+*.pem
+talenv.yaml

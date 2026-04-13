@@ -1,0 +1,64 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: prod-linux-runners
+  namespace: arc-runners
+spec:
+  dependsOn:
+    - name: arc
+      namespace: arc-systems
+  interval: 10m
+  releaseName: prod-linux-runners
+  chart:
+    spec:
+      chart: gha-runner-scale-set
+      version: 0.14.x
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller
+        namespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+  values:
+    githubConfigUrl: https://github.com/jckimble
+    githubConfigSecret: arc-github-app-auth
+    minRunners: 0
+    maxRunners: 10
+    runnerGroup: default
+    runnerScaleSetName: prod-linux
+    containerMode:
+      type: dind
+    controllerServiceAccount:
+      namespace: arc-systems
+      name: arc-gha-runner-scale-set-controller
+    listenerTemplate:
+      spec:
+        priorityClassName: ops-standard
+        containers:
+          - name: listener
+            resources:
+              requests:
+                cpu: 100m
+                memory: 128Mi
+              limits:
+                memory: 256Mi
+    template:
+      spec:
+        priorityClassName: ops-standard
+        containers:
+          - name: runner
+            env:
+              - name: ACTIONS_RUNNER_EPHEMERAL
+                value: "true"
+            resources:
+              requests:
+                cpu: "2"
+                memory: 8Gi
+              limits:
+                cpu: "4"
+                memory: 16Gi

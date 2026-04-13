@@ -1,0 +1,39 @@
+{
+  "name": "talos-arc",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {},
+    "ghcr.io/devcontainers/features/python:1": {},
+    "ghcr.io/devcontainers/features/kubectl-helm-minikube:1": {},
+    "ghcr.io/rio/features/kustomize:1": {},
+    "ghcr.io/jsburckhardt/devcontainer-features/flux:1": {},
+    "ghcr.io/gickis/devcontainer-features/kubeconform:1": {},
+    "ghcr.io/devcontainers-extra/features/age:1": {},
+    "ghcr.io/devcontainers-extra/features/sops:1": {},
+    "ghcr.io/devcontainers-extra/features/talosctl:1": {},
+    "ghcr.io/devcontainer-community/devcontainer-features/yq:1": {},
+    "./features/talhelper": {
+      "version": "v3.1.7"
+    }
+  },
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "KUBECONFIG": "/workspaces/talos-arc/.kube/config"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "redhat.vscode-yaml",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "timonwong.shellcheck",
+        "ms-azuretools.vscode-docker",
+        "github.vscode-pull-request-github"
+      ],
+      "settings": {
+        "files.trimTrailingWhitespace": true,
+        "yaml.format.enable": true,
+        "terminal.integrated.defaultProfile.linux": "bash"
+      }
+    }
+  }
+}

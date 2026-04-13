@@ -1,0 +1,71 @@
+clusterName: ${CLUSTER_NAME}
+# renovate: datasource=docker depName=ghcr.io/siderolabs/installer
+talosVersion: v1.12.6
+# renovate: datasource=docker depName=ghcr.io/siderolabs/kubelet
+kubernetesVersion: v1.35.3
+
+endpoint: https://${NODE_ADDRESS}:6443
+
+allowSchedulingOnControlPlanes: true
+
+inlineManifests:
+  - name: flux-system-namespace
+    contents: |-
+      apiVersion: v1
+      kind: Namespace
+      metadata:
+        name: flux-system
+        labels:
+          app.kubernetes.io/part-of: flux
+  - name: sops-age-secret
+    contents: |-
+      apiVersion: v1
+      kind: Secret
+      metadata:
+        name: sops-age
+        namespace: flux-system
+      type: Opaque
+      stringData:
+        age.agekey: |
+          ${AGE_SECRET_KEY}
+
+nodes:
+  - hostname: ${NODE_HOSTNAME}
+    ipAddress: ${NODE_ADDRESS}
+    controlPlane: true
+    installDiskSelector:
+      size: ">= 50GB"
+
+
+controlPlane:
+  patches:
+    - |-
+      cluster:
+        extraManifests:
+          - https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.46.0/install.yaml
+          - https://raw.githubusercontent.com/jckimble/talos-arc/main/clusters/prod/platform/flux-instance.yaml
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
+
+worker:
+  patches:
+    - |-
+      machine:
+        features:
+          kubernetesTalosAPIAccess:
+            enabled: true
+            allowedRoles:
+              - os:admin
+            allowedKubernetesNamespaces:
+              - system-upgrade
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions: []

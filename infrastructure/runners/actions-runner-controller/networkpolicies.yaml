@@ -1,0 +1,54 @@
+# arc-runners: runner pods only need outbound traffic to run jobs
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: runners-egress
+  namespace: arc-runners
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  egress:
+    - ports: # DNS
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    - ports: # HTTP (package managers, redirect handling)
+        - port: 80
+          protocol: TCP
+    - ports: # HTTPS (GitHub API, registries, packages)
+        - port: 443
+          protocol: TCP
+    - ports: # SSH (git clone over SSH)
+        - port: 22
+          protocol: TCP
+---
+# arc-systems: controller and listener need to reach GitHub API and Kubernetes API
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: arc-systems-policy
+  namespace: arc-systems
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  ingress:
+    - ports: # metrics scraping
+        - port: 8080
+          protocol: TCP
+  egress:
+    - ports: # DNS
+        - port: 53
+          protocol: UDP
+        - port: 53
+          protocol: TCP
+    - ports: # HTTPS (GitHub API + in-cluster Kubernetes API via kubernetes.default.svc)
+        - port: 443
+          protocol: TCP
+    - ports: # Kubernetes API direct (Talos default)
+        - port: 6443
+          protocol: TCP

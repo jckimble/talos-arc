@@ -1,0 +1,21 @@
+{
+  "id": "talhelper",
+  "version": "1.0.0",
+  "name": "talhelper",
+  "description": "Installs talhelper from GitHub releases.",
+  "documentationURL": "https://github.com/budimanjojo/talhelper",
+  "options": {
+    "version": {
+      "type": "string",
+      "proposals": [
+        "v3.1.7",
+        "latest"
+      ],
+      "default": "v3.1.7",
+      "description": "talhelper version to install"
+    }
+  },
+  "installsAfter": [
+    "ghcr.io/devcontainers/features/common-utils"
+  ]
+}

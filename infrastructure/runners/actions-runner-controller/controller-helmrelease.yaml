@@ -1,0 +1,34 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: arc
+  namespace: arc-systems
+spec:
+  interval: 1h
+  releaseName: arc
+  chart:
+    spec:
+      chart: gha-runner-scale-set-controller
+      version: 0.14.x
+      sourceRef:
+        kind: HelmRepository
+        name: actions-runner-controller
+        namespace: flux-system
+  install:
+    createNamespace: false
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      remediateLastFailure: true
+  values:
+    replicaCount: 2
+    priorityClassName: platform-critical
+    metrics:
+      controllerManagerAddr: :8080
+      listenerAddr: :8080
+      listenerEndpoint: /metrics
+    flags:
+      logLevel: info
+      logFormat: json
+      updateStrategy: eventual
