@@ -42,8 +42,9 @@ controlPlane:
     - |-
       cluster:
         extraManifests:
+          # renovate: datasource=github-releases depName=controlplaneio-fluxcd/flux-operator
           - https://github.com/controlplaneio-fluxcd/flux-operator/releases/download/v0.46.0/install.yaml
-          - https://raw.githubusercontent.com/jckimble/talos-arc/main/clusters/prod/platform/flux-instance.yaml
+          - https://raw.githubusercontent.com/jckimble/talos-arc/master/clusters/prod/platform/flux-instance.yaml
     - |-
       machine:
         features:
@@ -53,6 +54,11 @@ controlPlane:
               - os:admin
             allowedKubernetesNamespaces:
               - system-upgrade
+
+  schematic:
+    customization:
+      systemExtensions:
+        officialExtensions: []
 
 worker:
   patches:
@@ -69,3 +75,5 @@ worker:
     customization:
       systemExtensions:
         officialExtensions: []
+  installDiskSelector:
+    size: ">= 50GB"

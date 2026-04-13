@@ -13,6 +13,17 @@
       ],
       "versioningTemplate": "semver-coerced"
     }
+    ,
+    {
+      "customType": "regex",
+      "fileMatch": [
+        "^bootstrap/talos/talconfig\\.yaml$"
+      ],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>\\S+) depName=(?<depName>\\S+)\\s+- https://github\\.com/[^/]+/[^/]+/releases/download/(?<currentValue>[^/]+)/"
+      ],
+      "versioningTemplate": "semver-coerced"
+    }
   ],
   "packageRules": [
     {

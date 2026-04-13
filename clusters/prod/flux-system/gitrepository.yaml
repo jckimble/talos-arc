@@ -6,6 +6,6 @@ metadata:
 spec:
   interval: 1m
   ref:
-    branch: main
+    branch: master
   timeout: 60s
   url: https://github.com/jckimble/talos-arc.git

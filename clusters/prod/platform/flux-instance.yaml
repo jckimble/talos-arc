@@ -33,7 +33,7 @@ spec:
   sync:
     kind: GitRepository
     url: https://github.com/jckimble/talos-arc.git
-    ref: refs/heads/main
+    ref: refs/heads/master
     path: ./clusters/prod/flux-system
   kustomize:
     patches:
