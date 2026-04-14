@@ -52,6 +52,7 @@ spec:
         priorityClassName: ops-standard
         containers:
           - name: runner
+            image: ghcr.io/actions/actions-runner:latest
             env:
               - name: ACTIONS_RUNNER_EPHEMERAL
                 value: "true"
