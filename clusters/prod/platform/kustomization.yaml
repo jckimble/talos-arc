@@ -6,3 +6,4 @@ resources:
   - ../../../infrastructure/controllers/cluster-baseline
   - operator-kustomization.yaml
   - infra-kustomization.yaml
+  - upgrades-kustomization.yaml
