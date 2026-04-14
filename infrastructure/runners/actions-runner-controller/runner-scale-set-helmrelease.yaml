@@ -29,11 +29,10 @@ spec:
     githubConfigSecret: arc-github-app-auth
     minRunners: 0
     maxRunners: 10
-    runnerGroup: default
     runnerScaleSetName: prod-linux
     controllerServiceAccount:
       namespace: arc-systems
-      name: arc-gha-runner-scale-set-controller
+      name: arc-gha-rs-controller
     listenerTemplate:
       spec:
         priorityClassName: ops-standard
