@@ -32,7 +32,7 @@ spec:
     runnerGroup: default
     runnerScaleSetName: prod-linux
     containerMode:
-      type: dind
+      type: kubernetes-novolume
     controllerServiceAccount:
       namespace: arc-systems
       name: arc-gha-runner-scale-set-controller
