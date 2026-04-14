@@ -4,8 +4,6 @@ metadata:
   name: prod-workloads
   namespace: flux-system
 spec:
-  dependsOn:
-    - name: prod-infra
   interval: 10m
   path: ./clusters/prod/workloads
   prune: true
